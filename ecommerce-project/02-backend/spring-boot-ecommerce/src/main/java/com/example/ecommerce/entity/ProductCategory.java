@@ -30,6 +30,6 @@ public class ProductCategory {
 
     //For example, if a ProductCategory instance is deleted, all associated Product instances will also be deleted.
     //Set will ensure the uniqueness
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productCategory")
     private Set<Product> products;
 }
