@@ -1,23 +1,15 @@
 package com.example.ecommerce.entity;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
-@Table(name = "product")
+@Table(name="product")
 @Data
 public class Product {
 
@@ -26,10 +18,9 @@ public class Product {
     @Column(name = "id")
     private Long id;
 
-    //category Id will be foreign key here
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private ProductCategory productCategory;
+    private ProductCategory category;
 
     @Column(name = "sku")
     private String sku;
@@ -59,5 +50,4 @@ public class Product {
     @Column(name = "last_updated")
     @UpdateTimestamp
     private Date lastUpdated;
-
 }

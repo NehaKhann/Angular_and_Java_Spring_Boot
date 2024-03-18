@@ -7,13 +7,16 @@ import { Product } from '../common/product';
   providedIn: 'root',
 })
 export class ProductService {
+  //change page size to 100 items
   private baseUrl = 'http://localhost:8080/api/products';
   constructor(private httpClient: HttpClient) {}
 
   //Map the json data from spring data rest to product array
-  getProductList(): Observable<Product[]> {
+  getProductList(theCategoryId: number): Observable<Product[]> {
+    // @TODO backend task then come back to it
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
     return this.httpClient
-      .get<GetResponse>(this.baseUrl)
+      .get<GetResponse>(searchUrl)
       .pipe(map((response) => response._embedded.products));
   }
 }
