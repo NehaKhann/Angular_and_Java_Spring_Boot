@@ -13,6 +13,13 @@ export class ProductService {
   private categoryUrl = 'http://localhost:8080/api/product-category';
   constructor(private httpClient: HttpClient) {}
 
+
+  getProduct(theProductId: number): Observable<Product> {
+    //need to build URL based on product ID
+    const productUrl = `${this.baseUrl}/${theProductId}`;
+    //json will be directly mapped to Product variables
+    return this.httpClient.get<Product>(productUrl);
+  }
   //Map the json data from spring data rest to product array
   getProductList(theCategoryId: number): Observable<Product[]> {
     // @TODO backend task then come back to it
