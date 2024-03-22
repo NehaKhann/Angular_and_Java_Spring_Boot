@@ -7,12 +7,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
+import { SearchComponent } from './components/search/search.component';
 
 //order of routes is important specific - generic
 const routes: Routes = [
   //create new instance of component
   // { path: 'category/:id', component: ProductListComponent },
-  {path: 'category/:id/:name', component: ProductListComponent},
+  { path: 'search/:keyword', component: ProductListComponent },
+  { path: 'category/:id/:name', component: ProductListComponent },
   { path: 'category', component: ProductListComponent },
   { path: 'products', component: ProductListComponent },
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -21,7 +23,12 @@ const routes: Routes = [
 ];
 //configuring the router on line 23
 @NgModule({
-  declarations: [AppComponent, ProductListComponent, ProductCategoryMenuComponent],
+  declarations: [
+    AppComponent,
+    ProductListComponent,
+    ProductCategoryMenuComponent,
+    SearchComponent,
+  ],
   imports: [RouterModule.forRoot(routes), BrowserModule, HttpClientModule],
   providers: [ProductService],
   bootstrap: [AppComponent],
