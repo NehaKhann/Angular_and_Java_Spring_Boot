@@ -13,13 +13,24 @@ export class ProductService {
   private categoryUrl = 'http://localhost:8080/api/product-category';
   constructor(private httpClient: HttpClient) {}
 
-
   getProduct(theProductId: number): Observable<Product> {
     //need to build URL based on product ID
     const productUrl = `${this.baseUrl}/${theProductId}`;
     //json will be directly mapped to Product variables
     return this.httpClient.get<Product>(productUrl);
   }
+
+  getProductListPaginate(
+    thePage: number,
+    thePageSize: number,
+    theCategoryId: number
+  ): Observable<GetResponseProducts> {
+    const searchUrl =
+      `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}` +
+      `&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+  }
+
   //Map the json data from spring data rest to product array
   getProductList(theCategoryId: number): Observable<Product[]> {
     // @TODO backend task then come back to it
@@ -48,6 +59,12 @@ It specifies that the API response will have an _embedded property, which contai
 interface GetResponseProducts {
   _embedded: {
     products: Product[];
+  };
+  page: {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
   };
 }
 

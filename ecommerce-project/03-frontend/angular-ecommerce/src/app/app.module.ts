@@ -9,7 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './components/search/search.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //order of routes is important specific - generic
 const routes: Routes = [
   //create new instance of component
@@ -32,7 +32,12 @@ const routes: Routes = [
     SearchComponent,
     ProductDetailsComponent,
   ],
-  imports: [RouterModule.forRoot(routes), BrowserModule, HttpClientModule],
+  imports: [
+    RouterModule.forRoot(routes),
+    BrowserModule,
+    HttpClientModule,
+    NgbModule,
+  ],
   providers: [ProductService],
   bootstrap: [AppComponent],
 })
