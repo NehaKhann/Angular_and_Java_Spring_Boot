@@ -1,6 +1,9 @@
 <div class="main-content">
   <div class="section-content section-content-p30">
-    <h4>Category: {{ currentCategoryName }}</h4>
+    <h4 *ngIf="searchMode; else notSearch">Search Results:</h4>
+    <ng-template #notSearch>
+      <h4>Category: {{ currentCategoryName }}</h4>
+    </ng-template>
     <hr />
     <div class="container-fluid">
       <div class="row">
@@ -16,7 +19,12 @@
             <div class="price">
               {{ tempProduct.unitPrice | currency : "USD" }}
             </div>
-            <button (click)="addToCart(tempProduct)" class="btn btn-primary btn-sm">Add to cart</button>
+            <button
+              (click)="addToCart(tempProduct)"
+              class="btn btn-primary btn-sm"
+            >
+              Add to cart
+            </button>
           </div>
         </div>
 
