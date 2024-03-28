@@ -3,6 +3,11 @@
  * Common CSS
  * ----------------------------
  */
+ .main-content .table:not(caption) tr td button.btn.btn-primary:hover {
+    background-color: #007bff !important; /* Change to the desired hover color */
+    color: #fff !important; /* Change to the desired text color */
+}
+
 
  *{
     margin:0;
@@ -514,7 +519,7 @@ input.au-input.au-input-xl{
     background:#fff
 }
 .main-content.page-m{
-    padding:10% 15%!important
+    padding:10% 30% 10% 5%
 }
 
 /* 
