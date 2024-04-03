@@ -40,17 +40,17 @@ export class CheckoutComponent implements OnInit {
         firstName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ANCommerceValidators.notOnlyWhiteSpace,
+          ANCommerceValidators.notOnlyWhitespace,
         ]),
         lastName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
-          ANCommerceValidators.notOnlyWhiteSpace,
+          ANCommerceValidators.notOnlyWhitespace,
         ]),
         email: new FormControl('', [
           Validators.required,
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-          ANCommerceValidators.notOnlyWhiteSpace,
+          ANCommerceValidators.notOnlyWhitespace,
         ]),
       }),
       shippingAddress: this.formBuilder.group({
