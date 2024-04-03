@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { ANCommerceFormService } from 'src/app/services/ancommerce-form.service';
+import { ANCommerceValidators } from 'src/app/validators/ancommerce-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -10,12 +16,16 @@ import { ANCommerceFormService } from 'src/app/services/ancommerce-form.service'
   styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit {
-  checkoutFormGroup: FormGroup = new FormGroup({});
+  checkoutFormGroup!: FormGroup;
+
   totalPrice: number = 0;
   totalQuantity: number = 0;
+
   creditCardYears: number[] = [];
   creditCardMonths: number[] = [];
+
   countries: Country[] = [];
+
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
 
@@ -27,9 +37,21 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: [''],
-        lastName: [''],
-        email: [''],
+        firstName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          ANCommerceValidators.notOnlyWhiteSpace,
+        ]),
+        lastName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          ANCommerceValidators.notOnlyWhiteSpace,
+        ]),
+        email: new FormControl('', [
+          Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          ANCommerceValidators.notOnlyWhiteSpace,
+        ]),
       }),
       shippingAddress: this.formBuilder.group({
         street: [''],
@@ -55,43 +77,72 @@ export class CheckoutComponent implements OnInit {
       }),
     });
 
-    //populate credit card months
+    // populate credit card months
+
     const startMonth: number = new Date().getMonth() + 1;
     console.log('startMonth: ' + startMonth);
+
     this.anCommerceFormService
       .getCreditCardMonths(startMonth)
       .subscribe((data) => {
         console.log('Retrieved credit card months: ' + JSON.stringify(data));
         this.creditCardMonths = data;
       });
-    //populate credit card years
+
+    // populate credit card years
+
     this.anCommerceFormService.getCreditCardYears().subscribe((data) => {
-      console.log('Retrieved Credit Card Years: ' + JSON.stringify(data));
+      console.log('Retrieved credit card years: ' + JSON.stringify(data));
       this.creditCardYears = data;
     });
 
     // populate countries
+
     this.anCommerceFormService.getCountries().subscribe((data) => {
       console.log('Retrieved countries: ' + JSON.stringify(data));
       this.countries = data;
     });
   }
+
+  get firstName() {
+    return this.checkoutFormGroup.get('customer.firstName');
+  }
+  get lastName() {
+    return this.checkoutFormGroup.get('customer.lastName');
+  }
+  get email() {
+    return this.checkoutFormGroup.get('customer.email');
+  }
+
   copyShippingAddressToBillingAddress(event: any) {
     if (event.target.checked) {
       this.checkoutFormGroup.controls['billingAddress'].setValue(
         this.checkoutFormGroup.controls['shippingAddress'].value
       );
+
       // bug fix for states
       this.billingAddressStates = this.shippingAddressStates;
     } else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
-      //bug fix for states
+
+      // bug fix for states
       this.billingAddressStates = [];
     }
   }
+
   onSubmit() {
     console.log('Handling the submit button');
+
+    if (this.checkoutFormGroup.invalid) {
+      this.checkoutFormGroup.markAllAsTouched();
+    }
+
     console.log(this.checkoutFormGroup.get('customer')?.value);
+    console.log(
+      'The email address is ' +
+        this.checkoutFormGroup.get('customer')?.value.email
+    );
+
     console.log(
       'The shipping address country is ' +
         this.checkoutFormGroup.get('shippingAddress')?.value.country.name
@@ -104,18 +155,22 @@ export class CheckoutComponent implements OnInit {
 
   handleMonthsAndYears() {
     const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+
     const currentYear: number = new Date().getFullYear();
     const selectedYear: number = Number(
       creditCardFormGroup?.value.expirationYear
     );
 
-    // if the cuurent year equals the selected year then start with the current month
+    // if the current year equals the selected year, then start with the current month
+
     let startMonth: number;
+
     if (currentYear === selectedYear) {
       startMonth = new Date().getMonth() + 1;
     } else {
       startMonth = 1;
     }
+
     this.anCommerceFormService
       .getCreditCardMonths(startMonth)
       .subscribe((data) => {
