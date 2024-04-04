@@ -8,6 +8,7 @@ import {
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { ANCommerceFormService } from 'src/app/services/ancommerce-form.service';
+import { CartService } from 'src/app/services/cart.service';
 import { ANCommerceValidators } from 'src/app/validators/ancommerce-validators';
 
 @Component({
@@ -31,10 +32,13 @@ export class CheckoutComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private anCommerceFormService: ANCommerceFormService
+    private anCommerceFormService: ANCommerceFormService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
+    this.reviewCartDetails();
+
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
@@ -135,6 +139,16 @@ export class CheckoutComponent implements OnInit {
     this.anCommerceFormService.getCountries().subscribe((data) => {
       console.log('Retrieved countries: ' + JSON.stringify(data));
       this.countries = data;
+    });
+  }
+  reviewCartDetails() {
+    // subcribe to cartService.totalQuantity
+    this.cartService.totalQuantity.subscribe((totalQuantity) => {
+      this.totalQuantity = totalQuantity;
+    });
+    // subcribe to cartService.totalPrice
+    this.cartService.totalPrice.subscribe((totalPrice) => {
+      this.totalPrice = totalPrice;
     });
   }
   //Call these methods in HTML Page to get what user has input
