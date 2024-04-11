@@ -14,6 +14,7 @@ import { CartStatusComponent } from './components/cart-status/cart-status.compon
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './components/login/login.component';
 //order of routes is important specific - generic
 const routes: Routes = [
   //create new instance of component
@@ -40,6 +41,7 @@ const routes: Routes = [
     CartStatusComponent,
     CartDetailsComponent,
     CheckoutComponent,
+    LoginComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
