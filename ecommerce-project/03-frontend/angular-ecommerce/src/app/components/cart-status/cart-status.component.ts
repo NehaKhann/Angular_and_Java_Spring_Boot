@@ -16,8 +16,12 @@ export class CartStatusComponent implements OnInit {
   }
   updateCartStatus() {
     //subscribe to the cart totalPrice
+    // Because it's an observable, you can subscribe to it
+    // subject.subscribe(observer);
     this.cartService.totalPrice.subscribe((data) => (this.totalPrice = data));
     //subscribe to the cart totalQuantity
-    this.cartService.totalQuantity.subscribe((data) => (this.totalQuantity = data));
+    this.cartService.totalQuantity.subscribe(
+      (data) => (this.totalQuantity = data)
+    );
   }
 }

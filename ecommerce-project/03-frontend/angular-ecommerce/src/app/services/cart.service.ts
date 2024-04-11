@@ -57,6 +57,8 @@ export class CartService {
     }
 
     // publish the new values ... all subscribers will receive the new data
+    // As an observer, it can also emit values
+    // subject.next('Hello');
     this.totalPrice.next(totalPriceValue);
     this.totalQuantity.next(totalQuantityValue);
 
