@@ -12,3 +12,7 @@ import com.example.ecommerce.entity.ProductCategory;
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
 
 }
+// Usage of collectionResourceRel: When clients consume the API and 
+// Spring Data REST returns a collection of ProductCategory entities,
+// it will embed 
+// them in the response JSON under a key named productCategory.

@@ -38,7 +38,9 @@ export class ANCommerceFormService {
     for (let theMonth = startMonth; theMonth <= 12; theMonth++) {
       data.push(theMonth);
     }
+    console.log("Simple data array : " + data);
     //will wrap an object as an Observable
+    console.log("Observable data array : " + of(data));
     return of(data);
   }
   getCreditCardYears(): Observable<number[]> {

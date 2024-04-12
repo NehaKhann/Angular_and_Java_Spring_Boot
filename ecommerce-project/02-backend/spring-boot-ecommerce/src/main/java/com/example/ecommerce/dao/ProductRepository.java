@@ -21,4 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // select * from Product p where p.name like concat('%',:name,'%')
     // /search/findByNameContaining?name=python
 
+
+    //http://localhost:8080/api/products/search/findByCategoryId?id=1&page=0&size=5
 }
+
