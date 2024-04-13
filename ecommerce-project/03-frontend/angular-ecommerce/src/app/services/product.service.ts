@@ -58,10 +58,14 @@ export class ProductService {
       .get<GetResponseProducts>(searchUrl)
       .pipe(map((response) => response._embedded.products));
   }
-  getProductCategories(): Observable<ProductCategory[]> {
+  // getProductCategories(): Observable<ProductCategory[]> {
+  //   return this.httpClient
+  //     .get<GetResponseProductCategory>(this.categoryUrl)
+  //     .pipe(map((response) => response._embedded.productCategory));
+  // }
+  getProductCategories(): Observable<GetResponseProductCategory> {
     return this.httpClient
-      .get<GetResponseProductCategory>(this.categoryUrl)
-      .pipe(map((response) => response._embedded.productCategory));
+      .get<GetResponseProductCategory>(this.categoryUrl);
   }
 }
 /*This interface defines the structure of the response expected from the API.
