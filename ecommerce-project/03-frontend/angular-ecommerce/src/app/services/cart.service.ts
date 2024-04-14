@@ -11,7 +11,20 @@ export class CartService {
   totalPrice: Subject<number> = new ReplaySubject<number>(0);
   totalQuantity: Subject<number> = new ReplaySubject<number>(0);
 
-  constructor() {}
+  //ref to web browser session storage
+  // storage: Storage = sessionStorage;
+  storage: Storage = localStorage;
+  constructor() {
+    //read data from storage
+    //read json string and converts to object
+    let data = JSON.parse(this.storage.getItem('cartItems')!);
+    if (data != null) {
+      this.cartItems = data;
+
+      //compute totals based on data that is read from storage
+      this.computeCartTotals();
+    }
+  }
 
   addToCart(theCartItem: CartItem) {
     // check if we already have the item in our cart
@@ -64,6 +77,7 @@ export class CartService {
 
     // log cart data just for debugging purposes
     this.logCartData(totalPriceValue, totalQuantityValue);
+    this.persistCartItems();
   }
 
   logCartData(totalPriceValue: number, totalQuantityValue: number) {
@@ -81,6 +95,9 @@ export class CartService {
       )}, totalQuantity: ${totalQuantityValue}`
     );
     console.log('----');
+  }
+  persistCartItems() {
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
   }
 
   decrementQuantity(theCartItem: CartItem) {
