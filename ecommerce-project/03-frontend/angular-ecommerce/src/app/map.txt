@@ -1,0 +1,44 @@
+
+<button (click)="GetAsnycData()">Get Data</button>
+<div *ngFor="let x of data">
+  <h1>{{x}}</h1>
+</div>
+
+
+
+
+import { Component } from '@angular/core';
+import { from, map } from 'rxjs';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  title = 'angular-ecommerce';
+  myObservable = from([2, 4, 6, 8, 10]);
+  transformedObs = this.myObservable.pipe(
+    map((val) => {
+      return val * 5;
+    })
+  );
+  data: any[] = []; // Initialize data as an array
+
+  GetAsnycData() {
+    this.transformedObs.subscribe({
+      next: (val: any) => {
+        console.log('data ' + val);
+        this.data.push(val); // Now valid as data is an array
+        console.log('data array: ', this.data); // Updated to print the array
+      },
+      error(err: any) {
+        alert(err.message);
+      },
+      complete: () => {
+        alert('All data is streamed');
+        console.log('Final data array:', this.data); // Log final data when complete
+      },
+    });
+  }
+}
